@@ -20,6 +20,10 @@ New to Claude? Start here:
 
 - **Entry-level guide (English)**: [`guide_entry_level_en.md`](./guide_entry_level_en.md) — A 13-week roadmap from zero to certification-ready, designed for beginners with no prior Claude experience.
 
+## Interactive Learning
+
+- **Gamified Learning Path (English)**: [`learning_path_en.html`](./learning_path_en.html) — An interactive, gamified learning interface with 12 lessons, quizzes, XP/leveling system, achievements, and domain mastery tracking. Open the HTML file in any browser to start learning.
+
 ## Study Guide
 
 - **English guide**: [`guide_en.md`](./guide_en.MD)
