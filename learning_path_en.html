@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Certified Architect — Learning Path</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0f0f1a;
+  --bg-card: #1a1a2e;
+  --bg-card-hover: #222240;
+  --bg-surface: #16162b;
+  --accent: #6c63ff;
+  --accent-light: #8b83ff;
+  --accent-glow: rgba(108,99,255,.25);
+  --green: #22c55e;
+  --green-dim: #166534;
+  --yellow: #eab308;
+  --yellow-dim: #854d0e;
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --cyan: #06b6d4;
+  --pink: #ec4899;
+  --orange: #f97316;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --text-muted: #64748b;
+  --border: #2a2a4a;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(0,0,0,.3);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* Layout */
+.app { display: flex; height: 100vh; overflow: hidden; }
+
+/* Sidebar */
+.sidebar {
+  width: 280px; min-width: 280px;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.sidebar-brand {
+  padding: 20px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+}
+.brand-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--pink));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.brand-text { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.brand-sub { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+
+/* Profile Card */
+.profile-card {
+  margin: 16px; padding: 16px;
+  background: var(--bg-card); border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.profile-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--cyan));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; flex-shrink: 0;
+}
+.profile-info { flex: 1; }
+.profile-name { font-size: 14px; font-weight: 700; }
+.profile-title { font-size: 11px; color: var(--text-muted); }
+.level-badge {
+  background: var(--accent); color: #fff;
+  font-size: 11px; font-weight: 800;
+  padding: 2px 8px; border-radius: 20px;
+}
+.xp-bar-wrap { margin-top: 8px; }
+.xp-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-dim); margin-bottom: 4px; }
+.xp-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.xp-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--cyan)); border-radius: 3px; transition: width .5s ease; }
+
+.stats-row { display: flex; gap: 8px; margin-top: 12px; }
+.stat-item {
+  flex: 1; text-align: center;
+  background: var(--bg-surface); border-radius: var(--radius-sm);
+  padding: 8px 4px;
+}
+.stat-val { font-size: 18px; font-weight: 800; color: var(--accent-light); }
+.stat-lbl { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
+
+/* Nav */
+.nav-section {
+  padding: 8px 12px; flex: 1; overflow-y: auto;
+}
+.nav-section::-webkit-scrollbar { width: 4px; }
+.nav-section::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.nav-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--text-muted);
+  padding: 8px 8px 4px;
+}
+.nav-btn {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 10px 12px;
+  background: none; border: none; cursor: pointer;
+  font-size: 13px; color: var(--text-dim);
+  border-radius: var(--radius-sm);
+  transition: all .15s; text-align: left;
+}
+.nav-btn:hover { background: var(--bg-card-hover); color: var(--text); }
+.nav-btn.active { background: var(--accent-glow); color: var(--accent-light); font-weight: 600; }
+.nav-icon { font-size: 16px; width: 24px; text-align: center; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; font-size: 10px; font-weight: 700;
+  padding: 1px 7px; border-radius: 10px;
+  background: var(--accent); color: #fff;
+}
+
+/* Main content */
+.main { flex: 1; overflow-y: auto; }
+.main::-webkit-scrollbar { width: 6px; }
+.main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.page { display: none; padding: 32px 40px; max-width: 1100px; margin: 0 auto; }
+.page.active { display: block; }
+
+.page-header { margin-bottom: 28px; }
+.page-title { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+.page-desc { font-size: 14px; color: var(--text-dim); }
+
+/* Cards grid */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+
+.card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+  transition: all .2s; cursor: pointer; position: relative; overflow: hidden;
+}
+.card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow); }
+.card-locked { opacity: .5; cursor: not-allowed; }
+.card-locked:hover { border-color: var(--border); transform: none; box-shadow: none; }
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.card-icon { font-size: 28px; }
+.card-badge {
+  font-size: 10px; font-weight: 700; padding: 3px 10px;
+  border-radius: 20px; text-transform: uppercase; letter-spacing: .04em;
+}
+.badge-new { background: var(--green-dim); color: var(--green); }
+.badge-progress { background: var(--yellow-dim); color: var(--yellow); }
+.badge-done { background: var(--green-dim); color: var(--green); }
+.badge-locked { background: rgba(100,116,139,.2); color: var(--text-muted); }
+.card-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.card-desc { font-size: 13px; color: var(--text-dim); margin-bottom: 14px; line-height: 1.5; }
+.card-meta { display: flex; gap: 16px; font-size: 11px; color: var(--text-muted); }
+.card-meta span { display: flex; align-items: center; gap: 4px; }
+.card-progress { margin-top: 12px; }
+.card-progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.card-progress-fill { height: 100%; border-radius: 2px; transition: width .5s; }
+
+/* Phase roadmap */
+.roadmap { position: relative; padding-left: 40px; }
+.roadmap::before {
+  content: ''; position: absolute; left: 15px; top: 0; bottom: 0;
+  width: 2px; background: var(--border);
+}
+.phase-node {
+  position: relative; margin-bottom: 32px;
+  padding: 20px; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  transition: all .2s;
+}
+.phase-node:hover { border-color: var(--accent); }
+.phase-dot {
+  position: absolute; left: -33px; top: 24px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--bg); border: 3px solid var(--border);
+  z-index: 1; transition: all .3s;
+}
+.phase-dot.completed { border-color: var(--green); background: var(--green); }
+.phase-dot.current { border-color: var(--accent); background: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
+.phase-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.phase-tag {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 4px;
+  background: var(--accent-glow); color: var(--accent-light);
+}
+.phase-title { font-size: 17px; font-weight: 700; }
+.phase-weeks { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+.phase-desc { font-size: 13px; color: var(--text-dim); margin-bottom: 12px; }
+.phase-modules { display: flex; flex-wrap: wrap; gap: 8px; }
+.module-chip {
+  font-size: 11px; padding: 4px 10px; border-radius: 6px;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  color: var(--text-dim); cursor: pointer; transition: all .15s;
+}
+.module-chip:hover { border-color: var(--accent); color: var(--text); }
+.module-chip.done { border-color: var(--green); color: var(--green); background: rgba(34,197,94,.1); }
+
+/* Domain mastery */
+.domain-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+  transition: all .2s;
+}
+.domain-card:hover { border-color: var(--accent); }
+.domain-top { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.domain-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.domain-info { flex: 1; }
+.domain-name { font-size: 15px; font-weight: 700; }
+.domain-weight { font-size: 12px; color: var(--text-muted); }
+.domain-mastery { text-align: right; }
+.mastery-pct { font-size: 22px; font-weight: 800; }
+.mastery-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+.domain-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 12px; }
+.domain-fill { height: 100%; border-radius: 3px; transition: width .5s; }
+.domain-skills { display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-tag {
+  font-size: 11px; padding: 3px 8px; border-radius: 4px;
+  background: var(--bg-surface); color: var(--text-dim);
+  border: 1px solid transparent; transition: all .15s;
+}
+.skill-tag.learned { border-color: var(--green); color: var(--green); }
+
+/* Achievements */
+.achievements-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+.achievement {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px;
+  display: flex; align-items: center; gap: 14px;
+  transition: all .2s;
+}
+.achievement.unlocked { border-color: var(--yellow); }
+.achievement.unlocked .ach-icon { opacity: 1; }
+.ach-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0; opacity: .3;
+  background: var(--bg-surface);
+}
+.ach-info { flex: 1; }
+.ach-name { font-size: 13px; font-weight: 700; }
+.ach-desc { font-size: 11px; color: var(--text-muted); }
+.ach-xp { font-size: 11px; font-weight: 700; color: var(--yellow); margin-top: 2px; }
+
+/* Lesson View */
+.lesson-view { max-width: 800px; margin: 0 auto; }
+.lesson-breadcrumb {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--text-muted); margin-bottom: 20px;
+}
+.lesson-breadcrumb a { color: var(--accent-light); text-decoration: none; cursor: pointer; }
+.lesson-breadcrumb a:hover { text-decoration: underline; }
+.lesson-content {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px 32px;
+  margin-bottom: 20px;
+}
+.lesson-content h2 { font-size: 20px; font-weight: 800; margin-bottom: 16px; color: var(--text); }
+.lesson-content h3 { font-size: 16px; font-weight: 700; margin: 20px 0 10px; color: var(--text); }
+.lesson-content p { font-size: 14px; color: var(--text-dim); margin-bottom: 12px; line-height: 1.7; }
+.lesson-content ul { margin: 8px 0 12px 20px; }
+.lesson-content li { font-size: 14px; color: var(--text-dim); margin-bottom: 6px; line-height: 1.5; }
+.lesson-content code {
+  background: rgba(108,99,255,.15); color: var(--accent-light);
+  padding: 2px 6px; border-radius: 4px;
+  font-family: "SF Mono", Menlo, Monaco, monospace; font-size: 13px;
+}
+.lesson-content pre {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 16px; margin: 12px 0;
+  overflow-x: auto; font-size: 13px; line-height: 1.5;
+}
+.lesson-content pre code { background: none; padding: 0; color: var(--text-dim); }
+.callout {
+  background: rgba(108,99,255,.08); border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 12px 16px; margin: 16px 0;
+  font-size: 13px; color: var(--text-dim);
+}
+.callout strong { color: var(--accent-light); }
+
+/* Quiz in lesson */
+.quiz-section {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px 28px; margin-bottom: 20px;
+}
+.quiz-title { font-size: 14px; font-weight: 700; color: var(--yellow); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.quiz-question { font-size: 15px; font-weight: 600; margin-bottom: 16px; line-height: 1.6; }
+.quiz-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.quiz-opt {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 16px; border: 2px solid var(--border);
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: all .15s; font-size: 14px; color: var(--text-dim);
+}
+.quiz-opt:hover:not(.q-locked) { border-color: var(--accent); color: var(--text); }
+.quiz-opt .q-letter {
+  width: 26px; height: 26px; min-width: 26px; border-radius: 50%;
+  background: var(--bg-surface); display: flex; align-items: center;
+  justify-content: center; font-weight: 700; font-size: 12px;
+  color: var(--text-dim); transition: all .2s; flex-shrink: 0;
+}
+.quiz-opt.q-correct { border-color: var(--green); background: rgba(34,197,94,.08); }
+.quiz-opt.q-correct .q-letter { background: var(--green); color: #fff; }
+.quiz-opt.q-wrong { border-color: var(--red); background: rgba(239,68,68,.08); }
+.quiz-opt.q-wrong .q-letter { background: var(--red); color: #fff; }
+.quiz-opt.q-dimmed { opacity: .45; }
+.quiz-opt.q-locked { cursor: default; }
+.quiz-feedback {
+  padding: 12px 16px; border-radius: var(--radius-sm);
+  font-size: 13px; line-height: 1.6; display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: rgba(34,197,94,.1); border-left: 3px solid var(--green); color: var(--green); }
+.quiz-feedback.wrong { background: rgba(239,68,68,.1); border-left: 3px solid var(--red); color: #fca5a5; }
+
+.lesson-nav { display: flex; justify-content: space-between; align-items: center; }
+.lesson-btn {
+  padding: 10px 24px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); background: var(--bg-card);
+  color: var(--text-dim); font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all .15s;
+}
+.lesson-btn:hover { border-color: var(--accent); color: var(--text); }
+.lesson-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.lesson-btn.primary:hover { background: var(--accent-light); }
+.lesson-btn:disabled { opacity: .35; cursor: default; }
+
+/* XP popup */
+.xp-popup {
+  position: fixed; top: 20px; right: 20px;
+  background: linear-gradient(135deg, var(--accent), var(--cyan));
+  color: #fff; padding: 12px 20px; border-radius: var(--radius);
+  font-weight: 700; font-size: 15px;
+  box-shadow: 0 4px 24px rgba(108,99,255,.4);
+  transform: translateY(-60px); opacity: 0;
+  transition: all .4s ease; z-index: 1000;
+  pointer-events: none;
+}
+.xp-popup.show { transform: translateY(0); opacity: 1; }
+
+/* Achievement popup */
+.ach-popup {
+  position: fixed; bottom: 20px; right: 20px;
+  background: var(--bg-card); border: 2px solid var(--yellow);
+  padding: 16px 20px; border-radius: var(--radius);
+  box-shadow: 0 4px 24px rgba(234,179,8,.3);
+  transform: translateY(80px); opacity: 0;
+  transition: all .4s ease; z-index: 1000;
+  display: flex; align-items: center; gap: 12px;
+  pointer-events: none;
+}
+.ach-popup.show { transform: translateY(0); opacity: 1; }
+.ach-popup-icon { font-size: 32px; }
+.ach-popup-text { font-size: 13px; }
+.ach-popup-title { font-weight: 700; color: var(--yellow); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .page { padding: 20px; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .achievements-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">C</div>
+      <div>
+        <div class="brand-text">Architect Academy</div>
+        <div class="brand-sub">Claude Certification Prep</div>
+      </div>
+    </div>
+
+    <div class="profile-card">
+      <div class="profile-top">
+        <div class="avatar" id="avatarLetter">A</div>
+        <div class="profile-info">
+          <div class="profile-name" id="profileName">Architect</div>
+          <div class="profile-title" id="profileTitle">Novice</div>
+        </div>
+        <div class="level-badge" id="levelBadge">Lv 1</div>
+      </div>
+      <div class="xp-bar-wrap">
+        <div class="xp-label"><span>XP</span><span id="xpText">0 / 100</span></div>
+        <div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item"><div class="stat-val" id="statLessons">0</div><div class="stat-lbl">Lessons</div></div>
+        <div class="stat-item"><div class="stat-val" id="statQuizzes">0</div><div class="stat-lbl">Quizzes</div></div>
+        <div class="stat-item"><div class="stat-val" id="statStreak">0</div><div class="stat-lbl">Streak</div></div>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Navigate</div>
+      <button class="nav-btn active" onclick="showPage('dashboard')" id="nav-dashboard">
+        <span class="nav-icon">&#9678;</span> Dashboard
+      </button>
+      <button class="nav-btn" onclick="showPage('roadmap')" id="nav-roadmap">
+        <span class="nav-icon">&#9776;</span> Learning Path
+      </button>
+      <button class="nav-btn" onclick="showPage('domains')" id="nav-domains">
+        <span class="nav-icon">&#9733;</span> Domain Mastery
+      </button>
+      <button class="nav-btn" onclick="showPage('lessons')" id="nav-lessons">
+        <span class="nav-icon">&#9997;</span> Lessons
+      </button>
+      <button class="nav-btn" onclick="showPage('achievements')" id="nav-achievements">
+        <span class="nav-icon">&#9813;</span> Achievements
+        <span class="nav-badge" id="achBadge">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="main">
+    <!-- Dashboard -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div class="page-title">Welcome back, Architect</div>
+        <div class="page-desc">Your journey to Claude Certified Architect starts here. Complete lessons, earn XP, and master all 5 domains.</div>
+      </div>
+
+      <div class="cards-grid" id="dashboardCards"></div>
+    </div>
+
+    <!-- Roadmap -->
+    <div class="page" id="page-roadmap">
+      <div class="page-header">
+        <div class="page-title">Learning Path</div>
+        <div class="page-desc">A 13-week journey from beginner to certification-ready. Complete each phase to unlock the next.</div>
+      </div>
+      <div class="roadmap" id="roadmapContent"></div>
+    </div>
+
+    <!-- Domains -->
+    <div class="page" id="page-domains">
+      <div class="page-header">
+        <div class="page-title">Domain Mastery</div>
+        <div class="page-desc">Track your progress across all 5 exam domains. Master each domain to maximize your exam score.</div>
+      </div>
+      <div id="domainsContent"></div>
+    </div>
+
+    <!-- Lessons -->
+    <div class="page" id="page-lessons">
+      <div class="page-header">
+        <div class="page-title">Lessons</div>
+        <div class="page-desc">Interactive lessons with quizzes. Complete lessons to earn XP and unlock achievements.</div>
+      </div>
+      <div class="cards-grid" id="lessonsGrid"></div>
+    </div>
+
+    <!-- Achievements -->
+    <div class="page" id="page-achievements">
+      <div class="page-header">
+        <div class="page-title">Achievements</div>
+        <div class="page-desc">Earn badges by completing milestones. Can you collect them all?</div>
+      </div>
+      <div class="achievements-grid" id="achievementsGrid"></div>
+    </div>
+
+    <!-- Lesson Detail -->
+    <div class="page" id="page-lesson-detail">
+      <div class="lesson-view" id="lessonView"></div>
+    </div>
+  </div>
+</div>
+
+<div class="xp-popup" id="xpPopup"></div>
+<div class="ach-popup" id="achPopup">
+  <div class="ach-popup-icon" id="achPopupIcon"></div>
+  <div class="ach-popup-text">
+    <div class="ach-popup-title" id="achPopupTitle"></div>
+    <div id="achPopupDesc"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+
+const LEVELS = [
+  { name: 'Novice', xp: 0 },
+  { name: 'Learner', xp: 100 },
+  { name: 'Explorer', xp: 250 },
+  { name: 'Practitioner', xp: 500 },
+  { name: 'Builder', xp: 800 },
+  { name: 'Specialist', xp: 1200 },
+  { name: 'Architect', xp: 1700 },
+  { name: 'Expert', xp: 2300 },
+  { name: 'Master', xp: 3000 },
+  { name: 'Certified', xp: 4000 }
+];
+
+const DOMAINS = [
+  { id: 'd1', name: 'Agent Architecture & Orchestration', weight: 27, color: 'var(--accent)', icon: '⚙',
+    skills: ['Agentic Loop', 'stop_reason', 'Hub-and-Spoke', 'Task Tool', 'Hooks', 'Sessions', 'Pipelines vs Agents'] },
+  { id: 'd2', name: 'Tool Design & MCP Integration', weight: 18, color: 'var(--cyan)', icon: '🔧',
+    skills: ['tool_use', 'Tool Descriptions', 'JSON Schema', 'tool_choice', 'MCP Protocol', '.mcp.json', 'isError', 'Built-in Tools'] },
+  { id: 'd3', name: 'Claude Code Configuration', weight: 20, color: 'var(--green)', icon: '💻',
+    skills: ['CLAUDE.md Hierarchy', '@path Syntax', 'Path-Scoped Rules', 'Slash Commands', 'Skills', 'Planning Mode', 'Headless Mode', 'Sessions'] },
+  { id: 'd4', name: 'Prompt Engineering & Structured Output', weight: 20, color: 'var(--orange)', icon: '✏️',
+    skills: ['System Prompts', 'Few-Shot Prompting', 'Prompt Chaining', 'JSON Schemas', 'Validation Loops', 'Batches API', 'Assistant Prefill'] },
+  { id: 'd5', name: 'Context Management & Reliability', weight: 15, color: 'var(--pink)', icon: '🛡️',
+    skills: ['Context Window', 'Lost-in-Middle', 'Summarization', 'Fact Extraction', 'Escalation', 'Confidence Calibration', 'Error Propagation'] }
+];
+
+const LESSONS = [
+  // Phase 1: Foundation
+  { id: 'l01', phase: 1, domain: null, title: 'What is Claude?', desc: 'Understand Claude’s capabilities and how it processes instructions.', xp: 15, icon: '🧠',
+    content: `<h2>What is Claude?</h2>
+<p><strong>Claude</strong> is a family of AI models built by Anthropic. Unlike simple chatbots, Claude can reason about complex problems, write code, analyze documents, and use tools to interact with external systems.</p>
+<h3>Key Capabilities</h3>
+<ul>
+<li><strong>Text generation</strong> — writing, summarizing, translating, coding</li>
+<li><strong>Reasoning</strong> — multi-step problem solving, analysis, decision-making</li>
+<li><strong>Tool use</strong> — calling functions you define to take actions in the real world</li>
+<li><strong>Following instructions</strong> — adhering to system prompts and constraints</li>
+</ul>
+<h3>How Claude Processes Instructions</h3>
+<p>Claude uses a <strong>system prompt</strong> and <strong>user messages</strong>:</p>
+<ul>
+<li>The <strong>system prompt</strong> defines Claude’s role, constraints, and behavioral rules. It has higher priority than user messages.</li>
+<li><strong>User messages</strong> are the individual requests in the conversation.</li>
+</ul>
+<div class="callout"><strong>Key insight:</strong> The system prompt is loaded once and applies throughout the entire conversation. It shapes every response Claude generates.</div>
+<h3>The API is Stateless</h3>
+<p>Claude does not remember previous conversations on its own. On every API request, you must send the <strong>full conversation history</strong>. Each call is independent — Claude has no persistent memory between requests.</p>`,
+    quiz: { question: 'Why must you send the full conversation history on every API request?',
+      options: [
+        { letter: 'A', text: 'To increase the token count for billing purposes', correct: false },
+        { letter: 'B', text: 'Because the API is stateless — Claude has no memory between requests', correct: true },
+        { letter: 'C', text: 'To prevent other users from seeing your conversation', correct: false },
+        { letter: 'D', text: 'Because the system prompt resets after each message', correct: false }
+      ],
+      correctLetter: 'B',
+      explanation: 'The Claude API is stateless. Each request is independent, so you must include the full message history for Claude to understand the conversation context.' }
+  },
+  { id: 'l02', phase: 1, domain: null, title: 'Tokens and Context Windows', desc: 'Learn the fundamental units of AI text processing.', xp: 15, icon: '📏',
+    content: `<h2>Tokens and Context Windows</h2>
+<p>A <strong>token</strong> is the basic unit of text that language models process. In English, one token is roughly 3/4 of a word. The word "certification" is about 3 tokens.</p>
+<h3>What is a Context Window?</h3>
+<p>The <strong>context window</strong> is the total amount of text (measured in tokens) that Claude can process in a single request. It includes everything:</p>
+<ul>
+<li>The system prompt</li>
+<li>The full conversation history</li>
+<li>Tool definitions</li>
+<li>Tool results</li>
+</ul>
+<p>Think of it like a desk: you can only spread out so many papers before you run out of space. When the context window fills up, you need strategies to manage what stays on the desk.</p>
+<div class="callout"><strong>Key concept:</strong> <code>max_tokens</code> controls the maximum length of Claude’s <em>response</em>, not the size of the context window. Don’t confuse the two — this is a common exam trap.</div>
+<h3>The Lost-in-the-Middle Effect</h3>
+<p>Research shows that language models reliably process information at the <strong>beginning</strong> and <strong>end</strong> of long inputs but can miss details in the <strong>middle</strong>. Place your most important instructions near the top or bottom.</p>`,
+    quiz: { question: 'What does the max_tokens parameter control?',
+      options: [
+        { letter: 'A', text: 'The size of the context window', correct: false },
+        { letter: 'B', text: 'The total cost of the API call', correct: false },
+        { letter: 'C', text: 'The maximum length of Claude’s response', correct: true },
+        { letter: 'D', text: 'The number of tools Claude can use', correct: false }
+      ],
+      correctLetter: 'C',
+      explanation: 'max_tokens limits how long Claude’s response can be. It does not control the context window size or input capacity.' }
+  },
+  { id: 'l03', phase: 1, domain: 'd1', title: 'The Agentic Loop', desc: 'Master the core pattern behind every AI agent.', xp: 25, icon: '🔄',
+    content: `<h2>The Agentic Loop</h2>
+<p>The <strong>agentic loop</strong> is the fundamental pattern for building AI agents. It’s a cycle where Claude sends a request, checks the result, takes action if needed, and repeats until done.</p>
+<h3>How It Works</h3>
+<pre><code>1. Send a message to Claude (with tools available)
+2. Check stop_reason in the response
+3. If stop_reason is "tool_use":
+   a. Execute the requested tool
+   b. Send the tool result back to Claude
+   c. Go to step 2
+4. If stop_reason is "end_turn":
+   a. The agent is done
+   b. Show the response to the user</code></pre>
+<h3>The stop_reason Field</h3>
+<p>Every Claude API response includes a <code>stop_reason</code> field that tells you why the model stopped generating:</p>
+<ul>
+<li><code>"end_turn"</code> — Claude finished its response. Show the result to the user.</li>
+<li><code>"tool_use"</code> — Claude wants to call a tool. Execute it and send the result back.</li>
+<li><code>"max_tokens"</code> — The response was truncated because it hit the token limit.</li>
+</ul>
+<div class="callout"><strong>Critical for the exam:</strong> Always check <code>stop_reason</code> to control the loop. Never parse the response text to detect tool calls — that’s unreliable.</div>
+<p>For agentic systems, <code>"tool_use"</code> and <code>"end_turn"</code> are the two values that matter. They are the traffic signals that control your agent loop.</p>`,
+    quiz: { question: 'What should you check to determine if your agent loop should continue or stop?',
+      options: [
+        { letter: 'A', text: 'Parse the response text for phrases like "I’m done"', correct: false },
+        { letter: 'B', text: 'Check if the response contains any text content', correct: false },
+        { letter: 'C', text: 'Check the stop_reason field in the API response', correct: true },
+        { letter: 'D', text: 'Count the number of tool calls made so far', correct: false }
+      ],
+      correctLetter: 'C',
+      explanation: 'stop_reason is Claude’s explicit structured signal for loop control. "tool_use" means continue, "end_turn" means stop. Never rely on text parsing.' }
+  },
+  { id: 'l04', phase: 1, domain: 'd2', title: 'Tool Use Basics', desc: 'How Claude calls external functions through tool definitions.', xp: 25, icon: '🛠️',
+    content: `<h2>How Tool Use Works</h2>
+<p>Claude doesn’t execute code directly. Instead, it follows a structured handoff:</p>
+<ul>
+<li>Claude sees the available <strong>tool definitions</strong> you provide</li>
+<li>Based on the user’s request, Claude generates a <strong>tool call</strong> (structured JSON)</li>
+<li><strong>Your code</strong> executes the function and returns the result</li>
+<li>Claude reads the result and continues reasoning</li>
+</ul>
+<h3>Tool Descriptions Are Critical</h3>
+<p>The <strong>tool description</strong> is the primary mechanism Claude uses to decide which tool to call. A vague description like "Gets data" leads to wrong tool selections.</p>
+<p>A good tool description includes:</p>
+<ul>
+<li>What the tool does and what it returns</li>
+<li>Input formats with examples</li>
+<li>When to use it vs similar alternatives</li>
+<li>Edge cases and constraints</li>
+</ul>
+<div class="callout"><strong>Exam pattern:</strong> When a question says "the agent keeps calling the wrong tool," the correct first step is almost always to fix the tool descriptions.</div>
+<h3>The tool_choice Parameter</h3>
+<ul>
+<li><code>"auto"</code> — Claude decides whether to use a tool (default)</li>
+<li><code>"any"</code> — Claude must use some tool (guarantees structured output)</li>
+<li><code>{"type":"tool", "name":"X"}</code> — Claude must use a specific tool</li>
+</ul>`,
+    quiz: { question: 'When an agent consistently picks the wrong tool, what is the most effective first step?',
+      options: [
+        { letter: 'A', text: 'Add a routing classifier to preselect the correct tool', correct: false },
+        { letter: 'B', text: 'Reduce the number of available tools', correct: false },
+        { letter: 'C', text: 'Check and improve the tool descriptions', correct: true },
+        { letter: 'D', text: 'Add few-shot examples for every possible request pattern', correct: false }
+      ],
+      correctLetter: 'C',
+      explanation: 'Tool descriptions are the primary mechanism Claude uses to select tools. Improving them is the simplest, most effective first step before considering infrastructure changes.' }
+  },
+  { id: 'l05', phase: 2, domain: 'd1', title: 'Multi-Agent Architecture', desc: 'Design hub-and-spoke systems with coordinators and subagents.', xp: 30, icon: '🏛️',
+    content: `<h2>Hub-and-Spoke Architecture</h2>
+<p>For complex tasks, a single agent isn’t enough. The <strong>hub-and-spoke</strong> (or <strong>coordinator-subagent</strong>) architecture uses:</p>
+<ul>
+<li>A <strong>coordinator agent</strong> that decomposes tasks and delegates to specialists</li>
+<li><strong>Subagents</strong> that each focus on one area (research, analysis, writing, etc.)</li>
+<li>The coordinator collects results and synthesizes a final response</li>
+</ul>
+<h3>Critical Rule: Context Is NOT Shared</h3>
+<p>Subagents do <strong>not</strong> automatically inherit the coordinator’s conversation context. Every piece of information a subagent needs must be explicitly included in its prompt.</p>
+<div class="callout"><strong>This is one of the most commonly tested concepts on the exam.</strong> If the coordinator has customer data from an earlier tool call, the subagent won’t know about it unless the coordinator explicitly passes it.</div>
+<h3>The Task Tool</h3>
+<p>In the Claude Agent SDK, the <code>Task</code> tool is how a coordinator spawns subagents. Each Task creates a new, isolated context for the subagent.</p>
+<h3>When to Use Multi-Agent vs Single Agent</h3>
+<ul>
+<li><strong>Single agent:</strong> Simple tasks, predictable workflows, few tools</li>
+<li><strong>Multi-agent:</strong> Complex tasks requiring different expertise, when context isolation is needed, when parallel processing helps</li>
+</ul>`,
+    quiz: { question: 'When a coordinator spawns a subagent, what happens with the conversation context?',
+      options: [
+        { letter: 'A', text: 'The subagent inherits a copy of the coordinator’s full context', correct: false },
+        { letter: 'B', text: 'The subagent gets only the last 5 messages from the coordinator', correct: false },
+        { letter: 'C', text: 'The subagent starts with an empty context — the coordinator must pass information explicitly', correct: true },
+        { letter: 'D', text: 'Context is shared through a database both agents access', correct: false }
+      ],
+      correctLetter: 'C',
+      explanation: 'Subagents start with an empty context. The coordinator must explicitly include all relevant information in the subagent’s prompt. This is a fundamental concept tested on the exam.' }
+  },
+  { id: 'l06', phase: 2, domain: 'd2', title: 'MCP — The Universal Connector', desc: 'Connect Claude to external data sources and tools via MCP.', xp: 30, icon: '🔌',
+    content: `<h2>Model Context Protocol (MCP)</h2>
+<p><strong>MCP</strong> is an open standard for connecting AI applications to external data and tools. Think of it as USB for AI — a universal adapter that works with any compatible system.</p>
+<h3>MCP Architecture</h3>
+<p>An MCP server exposes two things:</p>
+<ul>
+<li><strong>Tools</strong> — actions Claude can perform (search, create, update, delete)</li>
+<li><strong>Resources</strong> — data Claude can read (documents, database records, API responses)</li>
+</ul>
+<h3>Configuration</h3>
+<p>MCP servers are configured in JSON files at two levels:</p>
+<ul>
+<li><strong>Project level</strong> (<code>.mcp.json</code>) — shared team configuration, committed to version control</li>
+<li><strong>User level</strong> (<code>~/.claude.json</code>) — personal overrides, API keys, credentials</li>
+</ul>
+<div class="callout"><strong>Security rule:</strong> Never put API keys or secrets in <code>.mcp.json</code>. Use environment variables or the user-level <code>~/.claude.json</code> for credentials.</div>
+<h3>Error Handling</h3>
+<p>When an MCP tool fails, return a <strong>structured error</strong> with:</p>
+<ul>
+<li><code>errorCategory</code> — what type of error (NOT_FOUND, TIMEOUT, etc.)</li>
+<li><code>isRetryable</code> — whether Claude should try again</li>
+<li><code>message</code> — human-readable description</li>
+</ul>
+<p>The <code>isError</code> flag tells Claude the call failed, enabling intelligent error handling.</p>`,
+    quiz: { question: 'Where should you put API keys for MCP server configuration?',
+      options: [
+        { letter: 'A', text: 'In .mcp.json with the rest of the server configuration', correct: false },
+        { letter: 'B', text: 'In the system prompt so Claude can pass them to tools', correct: false },
+        { letter: 'C', text: 'In environment variables or the user-level ~/.claude.json', correct: true },
+        { letter: 'D', text: 'Hardcoded in the MCP server source code', correct: false }
+      ],
+      correctLetter: 'C',
+      explanation: 'API keys should never be in version-controlled files like .mcp.json. Use environment variables or the user-level ~/.claude.json for credentials.' }
+  },
+  { id: 'l07', phase: 2, domain: 'd3', title: 'CLAUDE.md and Configuration', desc: 'Configure Claude Code with the CLAUDE.md hierarchy.', xp: 30, icon: '📄',
+    content: `<h2>The CLAUDE.md Hierarchy</h2>
+<p><strong>CLAUDE.md</strong> is the most important configuration file for Claude Code. It gives Claude persistent context about your project.</p>
+<h3>Three Levels</h3>
+<ul>
+<li><strong>User level</strong> (<code>~/.claude/CLAUDE.md</code>) — your personal preferences</li>
+<li><strong>Project level</strong> (<code>/project/CLAUDE.md</code>) — team standards and conventions</li>
+<li><strong>Directory level</strong> (<code>/project/src/CLAUDE.md</code>) — area-specific rules</li>
+</ul>
+<p>Each level adds to and can override the levels above it. More specific levels take priority.</p>
+<h3>Path-Scoped Rules</h3>
+<p>The <code>.claude/rules/</code> directory contains rule files with YAML frontmatter specifying which files they apply to:</p>
+<pre><code>---
+paths:
+  - "src/api/**/*"
+---
+All API handlers must validate input parameters.</code></pre>
+<h3>Slash Commands vs Skills</h3>
+<ul>
+<li><strong>Slash commands</strong> (<code>.claude/commands/</code>) — simple reusable prompts triggered by <code>/command-name</code></li>
+<li><strong>Skills</strong> (<code>.claude/skills/</code>) — advanced capabilities with their own <code>SKILL.md</code>, can specify <code>context: fork</code> and <code>allowed-tools</code></li>
+</ul>
+<div class="callout"><strong>Key concept:</strong> Use <code>context: fork</code> when a skill generates lots of output. This runs it in an isolated session, protecting your main conversation from noisy data.</div>`,
+    quiz: { question: 'A team member just joined but Claude Code doesn’t follow the team’s coding standards for them. What is the most likely cause?',
+      options: [
+        { letter: 'A', text: 'Claude Code needs to be reinstalled', correct: false },
+        { letter: 'B', text: 'The standards are in the original developers’ user-level CLAUDE.md, not the project-level one', correct: true },
+        { letter: 'C', text: 'The new developer’s CLAUDE.md has conflicting instructions', correct: false },
+        { letter: 'D', text: 'Claude Code learns preferences over time and the new developer needs to train it', correct: false }
+      ],
+      correctLetter: 'B',
+      explanation: 'If coding standards are only in user-level CLAUDE.md files, new team members won’t get them. Move shared standards to the project-level CLAUDE.md so everyone receives them automatically.' }
+  },
+  { id: 'l08', phase: 2, domain: 'd4', title: 'Few-Shot Prompting', desc: 'Use examples to dramatically improve Claude’s accuracy.', xp: 25, icon: '🎯',
+    content: `<h2>Few-Shot Prompting</h2>
+<p><strong>Few-shot prompting</strong> means giving Claude examples of the input-output pattern you want before asking it to handle new cases.</p>
+<h3>When to Use Few-Shot Examples</h3>
+<ul>
+<li>Claude consistently misclassifies or misformats output</li>
+<li>There are ambiguous cases that need precedent</li>
+<li>You need consistent formatting across responses</li>
+<li>The task has edge cases that aren’t obvious from instructions alone</li>
+</ul>
+<h3>Example</h3>
+<pre><code>Classify customer messages:
+
+Example 1:
+Input: "I was charged twice"
+Output: {"category": "billing", "urgency": "high"}
+
+Example 2:
+Input: "When will my package arrive?"
+Output: {"category": "shipping", "urgency": "medium"}
+
+Now classify: "I want to return the shoes"</code></pre>
+<div class="callout"><strong>Exam pattern:</strong> When a question describes inconsistent output formatting or tool selection, few-shot examples are frequently the correct answer. They’re a low-effort, high-impact intervention.</div>
+<h3>Explicit Criteria vs Vague Instructions</h3>
+<p>Vague: "Review this code for quality"</p>
+<p>Explicit: "Check for SQL injection, XSS, unvalidated input. For each issue, provide file, line, severity, and fix."</p>
+<p>The exam frequently tests whether explicit criteria are more effective than vague guidance.</p>`,
+    quiz: { question: 'Your agent produces inconsistently formatted output despite instructions saying "format results clearly." What is the most effective fix?',
+      options: [
+        { letter: 'A', text: 'Add more detailed format instructions with every field specified', correct: false },
+        { letter: 'B', text: 'Add 3-4 few-shot examples showing the exact desired format', correct: true },
+        { letter: 'C', text: 'Switch to a larger model with better instruction following', correct: false },
+        { letter: 'D', text: 'Post-process the output to fix formatting issues', correct: false }
+      ],
+      correctLetter: 'B',
+      explanation: 'Few-shot examples are the most effective technique for consistent formatting. They give Claude a concrete pattern to follow, which is more reliable than abstract instructions.' }
+  },
+  { id: 'l09', phase: 2, domain: 'd4', title: 'Structured Output with tool_use', desc: 'Get guaranteed JSON output using tool definitions.', xp: 30, icon: '📊',
+    content: `<h2>Structured Output</h2>
+<p>The most reliable way to get structured JSON from Claude is the <strong>tool_use approach</strong>: define a tool whose input schema matches your desired output, then force Claude to call it.</p>
+<h3>How It Works</h3>
+<ul>
+<li>Define a tool with a JSON schema for its inputs (your desired output structure)</li>
+<li>Set <code>tool_choice: {"type": "tool", "name": "your_tool"}</code> to force Claude to use it</li>
+<li>Claude’s "tool call input" is your structured data</li>
+</ul>
+<h3>JSON Schema Design</h3>
+<ul>
+<li><strong>Required fields</strong> — must always be provided</li>
+<li><strong>Optional fields</strong> — can be omitted when information isn’t available</li>
+<li><strong>Nullable fields</strong> — can be explicitly set to <code>null</code> (different from omitting)</li>
+<li><strong>Enum types</strong> — restrict to predefined values. Include an "other" option with a detail field.</li>
+</ul>
+<h3>Validation and Retry Loops</h3>
+<p>Even valid JSON can have wrong data (semantic errors). The pattern:</p>
+<ul>
+<li>Extract data → Validate → If wrong, send the document + incorrect extraction + specific error back → Retry</li>
+</ul>
+<div class="callout"><strong>Key insight:</strong> Include the <strong>specific validation error</strong> in retry prompts. "Try again" is useless; "The total (150) doesn’t match sum of line items (145)" gives actionable feedback.</div>`,
+    quiz: { question: 'How do you guarantee Claude returns JSON output matching a specific structure?',
+      options: [
+        { letter: 'A', text: 'Ask Claude to "please respond in JSON format"', correct: false },
+        { letter: 'B', text: 'Define a tool with the desired schema and use tool_choice to force it', correct: true },
+        { letter: 'C', text: 'Set max_tokens to match the expected JSON length', correct: false },
+        { letter: 'D', text: 'Parse Claude’s text response and extract JSON from it', correct: false }
+      ],
+      correctLetter: 'B',
+      explanation: 'Defining a tool with a JSON schema and forcing it with tool_choice guarantees structured output that matches your schema. This is more reliable than asking for JSON in the prompt.' }
+  },
+  { id: 'l10', phase: 2, domain: 'd5', title: 'Context Management Strategies', desc: 'Keep your agent working well over long conversations.', xp: 30, icon: '📦',
+    content: `<h2>Managing the Context Window</h2>
+<p>As conversations grow longer, managing the limited context window becomes critical. Here are the key strategies:</p>
+<h3>1. Extract Transactional Facts</h3>
+<p>Progressive summarization loses precise values. Extract critical facts into a persistent block:</p>
+<pre><code>## Case Facts
+- Customer: Jane Smith (ID: 12345)
+- Issue: Charged twice — $49.99 on 3/15 and 3/17
+- Offered: 15% discount on next order</code></pre>
+<p>This block survives summarization because it’s outside the summarized history.</p>
+<h3>2. Trim Tool Results</h3>
+<p>Use a <strong>PostToolUse hook</strong> to trim tool output before it enters the conversation. If a tool returns 40 fields but only 5 matter, trim the rest.</p>
+<h3>3. Delegate to Subagents</h3>
+<p>When a task generates lots of output (searching 120 files), delegate to a subagent. It processes the noisy data and returns only a concise summary.</p>
+<h3>4. Scratchpad Files</h3>
+<p>For long-running tasks, write intermediate results to a file. The agent reads them back when needed instead of keeping everything in context.</p>
+<div class="callout"><strong>Exam pattern:</strong> When a question says "context window is filling up," the answer is usually trimming, subagents, or scratchpad — <strong>not</strong> increasing <code>max_tokens</code>.</div>`,
+    quiz: { question: 'Production logs show the agent responds with vague values like "promotional pricing was discussed" instead of the specific 15% discount mentioned 20 turns ago. What is the most effective fix?',
+      options: [
+        { letter: 'A', text: 'Increase max_tokens to give more room for conversation history', correct: false },
+        { letter: 'B', text: 'Extract transactional facts into a persistent block outside summarized history', correct: true },
+        { letter: 'C', text: 'Disable conversation summarization entirely', correct: false },
+        { letter: 'D', text: 'Store full history in a database and retrieve on demand', correct: false }
+      ],
+      correctLetter: 'B',
+      explanation: 'Summarization inherently loses precise details. Extracting amounts, dates, and key facts into a persistent block ensures they survive summarization and remain available in every prompt.' }
+  },
+  { id: 'l11', phase: 2, domain: 'd5', title: 'Escalation and Reliability', desc: 'Know when to hand off to humans and when to handle autonomously.', xp: 25, icon: '⚠️',
+    content: `<h2>Escalation Patterns</h2>
+<p>Not every request should be handled by an AI agent. Knowing when to escalate to a human is a critical skill tested on the exam.</p>
+<h3>When to Escalate</h3>
+<ul>
+<li><strong>Policy gaps</strong> — the customer’s request falls outside documented policies</li>
+<li><strong>Contradictory data</strong> — tracking says "delivered" but customer says "not received"</li>
+<li><strong>Safety/compliance</strong> — actions that could cause financial or legal harm</li>
+</ul>
+<h3>When NOT to Escalate</h3>
+<ul>
+<li>Multi-issue requests (the agent can decompose these)</li>
+<li>Standard processes with clear policies</li>
+<li>Speculation ("the customer might change their mind")</li>
+</ul>
+<h3>Deterministic vs Probabilistic Enforcement</h3>
+<p>This is a critical exam concept:</p>
+<ul>
+<li><strong>Prompts</strong> are probabilistic — they usually work but can fail</li>
+<li><strong>Hooks/code</strong> are deterministic — they always enforce rules</li>
+</ul>
+<div class="callout"><strong>Exam rule:</strong> When the question involves money, compliance, or safety, the answer is programmatic enforcement (hooks, preconditions), not prompt instructions.</div>`,
+    quiz: { question: 'A customer requests competitor price matching. Your policy covers price drops on your own site but says nothing about competitors. What should the agent do?',
+      options: [
+        { letter: 'A', text: 'Apply the existing price-drop policy by analogy', correct: false },
+        { letter: 'B', text: 'Deny the request since competitor matching isn’t in the policy', correct: false },
+        { letter: 'C', text: 'Escalate to a human for policy interpretation', correct: true },
+        { letter: 'D', text: 'Ask the customer to contact support through another channel', correct: false }
+      ],
+      correctLetter: 'C',
+      explanation: 'This is a genuine policy gap. The agent must not invent policy. Escalation to a human for interpretation is the correct action when requests fall outside documented policies.' }
+  },
+  { id: 'l12', phase: 3, domain: 'd3', title: 'CI/CD Integration', desc: 'Run Claude Code in automated pipelines with headless mode.', xp: 30, icon: '⚙️',
+    content: `<h2>Claude Code in CI/CD</h2>
+<p>Claude Code can run in <strong>headless (non-interactive) mode</strong> for automated pipelines. This enables automated code reviews, test generation, and PR feedback.</p>
+<h3>Key CLI Flags</h3>
+<ul>
+<li><code>-p</code> / <code>--print</code> — non-interactive mode; runs the prompt and exits</li>
+<li><code>--output-format json</code> — returns structured JSON output</li>
+<li><code>--json-schema</code> — enforces a specific output schema</li>
+<li><code>--resume</code> — continues a previous session</li>
+</ul>
+<pre><code>claude -p "Review this PR for security issues" --output-format json</code></pre>
+<h3>Batch vs Synchronous</h3>
+<p>The <strong>Message Batches API</strong> offers 50% cost savings but can take up to 24 hours:</p>
+<ul>
+<li><strong>Blocking PR checks</strong> → synchronous (developers are waiting)</li>
+<li><strong>Overnight analysis</strong> → batch (no urgency, save money)</li>
+</ul>
+<div class="callout"><strong>Exam trap:</strong> The Batch API does not support multi-turn tool calling. Each request is a single turn. Don’t use it for iterative workflows where Claude needs to call tools and continue.</div>`,
+    quiz: { question: 'Your CI pipeline runs claude "Review this PR" but the job hangs indefinitely. What is the fix?',
+      options: [
+        { letter: 'A', text: 'Add the --batch flag', correct: false },
+        { letter: 'B', text: 'Add the -p flag for non-interactive mode', correct: true },
+        { letter: 'C', text: 'Redirect stdin from /dev/null', correct: false },
+        { letter: 'D', text: 'Set CLAUDE_HEADLESS=true environment variable', correct: false }
+      ],
+      correctLetter: 'B',
+      explanation: 'The -p (or --print) flag runs Claude Code non-interactively. It processes the prompt, prints the result, and exits without waiting for input — essential for CI/CD pipelines.' }
+  }
+];
+
+const ACHIEVEMENTS = [
+  { id: 'a01', name: 'First Steps', desc: 'Complete your first lesson', icon: '👣', xp: 10, condition: s => s.lessonsCompleted >= 1 },
+  { id: 'a02', name: 'Quick Learner', desc: 'Complete 3 lessons', icon: '📚', xp: 25, condition: s => s.lessonsCompleted >= 3 },
+  { id: 'a03', name: 'Scholar', desc: 'Complete 6 lessons', icon: '🎓', xp: 50, condition: s => s.lessonsCompleted >= 6 },
+  { id: 'a04', name: 'Completionist', desc: 'Complete all lessons', icon: '🏆', xp: 100, condition: s => s.lessonsCompleted >= LESSONS.length },
+  { id: 'a05', name: 'Quiz Ace', desc: 'Answer 5 quizzes correctly', icon: '🎯', xp: 30, condition: s => s.quizzesCorrect >= 5 },
+  { id: 'a06', name: 'Perfect Score', desc: 'Answer 10 quizzes correctly', icon: '⭐', xp: 75, condition: s => s.quizzesCorrect >= 10 },
+  { id: 'a07', name: 'Agent Architect', desc: 'Complete all Domain 1 lessons', icon: '⚙️', xp: 40, condition: s => domainComplete(s, 'd1') },
+  { id: 'a08', name: 'Tool Master', desc: 'Complete all Domain 2 lessons', icon: '🔧', xp: 40, condition: s => domainComplete(s, 'd2') },
+  { id: 'a09', name: 'Code Commander', desc: 'Complete all Domain 3 lessons', icon: '💻', xp: 40, condition: s => domainComplete(s, 'd3') },
+  { id: 'a10', name: 'Prompt Wizard', desc: 'Complete all Domain 4 lessons', icon: '🧙', xp: 40, condition: s => domainComplete(s, 'd4') },
+  { id: 'a11', name: 'Reliability Guardian', desc: 'Complete all Domain 5 lessons', icon: '🛡️', xp: 40, condition: s => domainComplete(s, 'd5') },
+  { id: 'a12', name: 'Streak Starter', desc: 'Maintain a 3-day streak', icon: '🔥', xp: 20, condition: s => s.streak >= 3 },
+  { id: 'a13', name: 'Dedicated', desc: 'Maintain a 7-day streak', icon: '💪', xp: 50, condition: s => s.streak >= 7 }
+];
+
+function domainComplete(state, domainId) {
+  const domainLessons = LESSONS.filter(l => l.domain === domainId);
+  return domainLessons.length > 0 && domainLessons.every(l => state.completedLessons.includes(l.id));
+}
+
+// ============================================================
+// STATE
+// ============================================================
+
+const STORAGE_KEY = 'claude-architect-learning';
+
+let state = loadState();
+
+function defaultState() {
+  return {
+    xp: 0,
+    completedLessons: [],
+    quizAnswers: {},
+    lessonsCompleted: 0,
+    quizzesCorrect: 0,
+    unlockedAchievements: [],
+    streak: 0,
+    lastActiveDate: null
+  };
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return { ...defaultState(), ...JSON.parse(saved) };
+  } catch(e) {}
+  return defaultState();
+}
+
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+// ============================================================
+// CORE LOGIC
+// ============================================================
+
+function getLevel() {
+  let lvl = 0;
+  for (let i = LEVELS.length - 1; i >= 0; i--) {
+    if (state.xp >= LEVELS[i].xp) { lvl = i; break; }
+  }
+  return lvl;
+}
+
+function getLevelProgress() {
+  const lvl = getLevel();
+  const currentXP = LEVELS[lvl].xp;
+  const nextXP = lvl < LEVELS.length - 1 ? LEVELS[lvl + 1].xp : LEVELS[lvl].xp;
+  const range = nextXP - currentXP;
+  if (range === 0) return 100;
+  return Math.min(100, ((state.xp - currentXP) / range) * 100);
+}
+
+function addXP(amount) {
+  state.xp += amount;
+  saveState();
+  updateProfile();
+  showXPPopup(amount);
+}
+
+function updateStreak() {
+  const today = new Date().toDateString();
+  if (state.lastActiveDate === today) return;
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  if (state.lastActiveDate === yesterday) {
+    state.streak++;
+  } else if (state.lastActiveDate !== today) {
+    state.streak = 1;
+  }
+  state.lastActiveDate = today;
+  saveState();
+}
+
+function completeLesson(lessonId) {
+  if (state.completedLessons.includes(lessonId)) return;
+  const lesson = LESSONS.find(l => l.id === lessonId);
+  if (!lesson) return;
+  state.completedLessons.push(lessonId);
+  state.lessonsCompleted++;
+  updateStreak();
+  addXP(lesson.xp);
+  checkAchievements();
+  saveState();
+}
+
+function answerQuiz(lessonId, letter, correct) {
+  if (state.quizAnswers[lessonId]) return;
+  state.quizAnswers[lessonId] = { letter, correct };
+  if (correct) {
+    state.quizzesCorrect++;
+    addXP(10);
+  }
+  checkAchievements();
+  saveState();
+}
+
+function checkAchievements() {
+  ACHIEVEMENTS.forEach(ach => {
+    if (state.unlockedAchievements.includes(ach.id)) return;
+    if (ach.condition(state)) {
+      state.unlockedAchievements.push(ach.id);
+      addXP(ach.xp);
+      showAchPopup(ach);
+    }
+  });
+  saveState();
+}
+
+// ============================================================
+// UI RENDERING
+// ============================================================
+
+function updateProfile() {
+  const lvl = getLevel();
+  document.getElementById('profileTitle').textContent = LEVELS[lvl].name;
+  document.getElementById('levelBadge').textContent = 'Lv ' + (lvl + 1);
+  document.getElementById('xpFill').style.width = getLevelProgress() + '%';
+  const next = lvl < LEVELS.length - 1 ? LEVELS[lvl + 1].xp : state.xp;
+  document.getElementById('xpText').textContent = state.xp + ' / ' + next;
+  document.getElementById('statLessons').textContent = state.lessonsCompleted;
+  document.getElementById('statQuizzes').textContent = state.quizzesCorrect;
+  document.getElementById('statStreak').textContent = state.streak;
+  document.getElementById('achBadge').textContent = state.unlockedAchievements.length;
+}
+
+function showXPPopup(amount) {
+  const el = document.getElementById('xpPopup');
+  el.textContent = '+' + amount + ' XP';
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+function showAchPopup(ach) {
+  const el = document.getElementById('achPopup');
+  document.getElementById('achPopupIcon').textContent = ach.icon;
+  document.getElementById('achPopupTitle').textContent = 'Achievement Unlocked!';
+  document.getElementById('achPopupDesc').textContent = ach.name + ' — +' + ach.xp + ' XP';
+  setTimeout(() => { el.classList.add('show'); }, 500);
+  setTimeout(() => { el.classList.remove('show'); }, 4000);
+}
+
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  const navBtn = document.getElementById('nav-' + pageId);
+  if (navBtn) navBtn.classList.add('active');
+
+  if (pageId === 'dashboard') renderDashboard();
+  if (pageId === 'roadmap') renderRoadmap();
+  if (pageId === 'domains') renderDomains();
+  if (pageId === 'lessons') renderLessons();
+  if (pageId === 'achievements') renderAchievements();
+}
+
+function renderDashboard() {
+  const el = document.getElementById('dashboardCards');
+  const totalLessons = LESSONS.length;
+  const completed = state.lessonsCompleted;
+  const pct = Math.round((completed / totalLessons) * 100);
+
+  let domainCards = DOMAINS.map(d => {
+    const dLessons = LESSONS.filter(l => l.domain === d.id);
+    const dDone = dLessons.filter(l => state.completedLessons.includes(l.id)).length;
+    const dPct = dLessons.length > 0 ? Math.round((dDone / dLessons.length) * 100) : 0;
+    return `<div class="card" onclick="showPage('domains')">
+      <div class="card-header">
+        <span class="card-icon">${d.icon}</span>
+        <span class="card-badge ${dPct === 100 ? 'badge-done' : dPct > 0 ? 'badge-progress' : 'badge-new'}">${dPct === 100 ? 'Mastered' : dPct > 0 ? dPct + '%' : 'Start'}</span>
+      </div>
+      <div class="card-title">${d.name}</div>
+      <div class="card-desc">Exam weight: ${d.weight}%</div>
+      <div class="card-progress">
+        <div class="card-progress-bar"><div class="card-progress-fill" style="width:${dPct}%;background:${d.color}"></div></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="card" onclick="showPage('roadmap')" style="grid-column: 1 / -1;">
+      <div class="card-header">
+        <span class="card-icon">🗺️</span>
+        <span class="card-badge ${pct === 100 ? 'badge-done' : 'badge-progress'}">${pct}% Complete</span>
+      </div>
+      <div class="card-title">Overall Progress</div>
+      <div class="card-desc">${completed} of ${totalLessons} lessons completed. ${totalLessons - completed === 0 ? 'All done!' : (totalLessons - completed) + ' remaining.'}</div>
+      <div class="card-progress">
+        <div class="card-progress-bar"><div class="card-progress-fill" style="width:${pct}%;background:linear-gradient(90deg,var(--accent),var(--cyan))"></div></div>
+      </div>
+    </div>
+    ${domainCards}`;
+}
+
+function renderRoadmap() {
+  const phases = [
+    { num: 1, title: 'Foundation Building', weeks: 'Weeks 1-3', desc: 'Build conceptual understanding with free Anthropic courses. Learn the API, tool use, Claude Code, and MCP basics.',
+      modules: ['What is Claude?', 'Tokens & Context', 'Agentic Loop', 'Tool Use Basics'] },
+    { num: 2, title: 'Deep Dive by Domain', weeks: 'Weeks 4-8', desc: 'Systematically master each exam domain with hands-on mini-projects and detailed concept study.',
+      modules: ['Multi-Agent Architecture', 'MCP Integration', 'CLAUDE.md Config', 'Few-Shot Prompting', 'Structured Output', 'Context Management', 'Escalation'] },
+    { num: 3, title: 'Hands-On Projects', weeks: 'Weeks 9-11', desc: 'Build 5 progressively complex projects that map to real exam scenarios.',
+      modules: ['Chatbot Project', 'Support Agent', 'MCP Server', 'Multi-Agent System', 'CI/CD Pipeline'] },
+    { num: 4, title: 'Exam Preparation', weeks: 'Weeks 12-13', desc: 'Review the comprehensive study guide, take practice tests, and learn exam strategies.',
+      modules: ['Study Guide Review', 'Practice Tests', 'Exam Strategies', 'Final Checklist'] }
+  ];
+
+  const phaseLessons = [
+    LESSONS.filter(l => l.phase === 1),
+    LESSONS.filter(l => l.phase === 2),
+    LESSONS.filter(l => l.phase === 3),
+    []
+  ];
+
+  const el = document.getElementById('roadmapContent');
+  el.innerHTML = phases.map((p, i) => {
+    const done = phaseLessons[i].length > 0 && phaseLessons[i].every(l => state.completedLessons.includes(l.id));
+    const started = phaseLessons[i].some(l => state.completedLessons.includes(l.id));
+    const dotClass = done ? 'completed' : started ? 'current' : '';
+    return `<div class="phase-node">
+      <div class="phase-dot ${dotClass}"></div>
+      <div class="phase-header">
+        <span class="phase-tag">Phase ${p.num}</span>
+        <span class="phase-title">${p.title}</span>
+        <span class="phase-weeks">${p.weeks}</span>
+      </div>
+      <div class="phase-desc">${p.desc}</div>
+      <div class="phase-modules">${p.modules.map(m => {
+        const moduleLesson = phaseLessons[i].find(l => l.title.includes(m.split(' ')[0]));
+        const isDone = moduleLesson && state.completedLessons.includes(moduleLesson.id);
+        return `<span class="module-chip ${isDone ? 'done' : ''}">${isDone ? '✓ ' : ''}${m}</span>`;
+      }).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderDomains() {
+  const el = document.getElementById('domainsContent');
+  el.innerHTML = DOMAINS.map(d => {
+    const dLessons = LESSONS.filter(l => l.domain === d.id);
+    const dDone = dLessons.filter(l => state.completedLessons.includes(l.id)).length;
+    const pct = dLessons.length > 0 ? Math.round((dDone / dLessons.length) * 100) : 0;
+    const learnedSkills = Math.round(d.skills.length * pct / 100);
+    return `<div class="domain-card">
+      <div class="domain-top">
+        <div class="domain-icon" style="background:${d.color}20">${d.icon}</div>
+        <div class="domain-info">
+          <div class="domain-name">${d.name}</div>
+          <div class="domain-weight">Exam weight: ${d.weight}% &middot; ${dDone}/${dLessons.length} lessons</div>
+        </div>
+        <div class="domain-mastery">
+          <div class="mastery-pct" style="color:${d.color}">${pct}%</div>
+          <div class="mastery-label">Mastery</div>
+        </div>
+      </div>
+      <div class="domain-bar"><div class="domain-fill" style="width:${pct}%;background:${d.color}"></div></div>
+      <div class="domain-skills">${d.skills.map((s, i) =>
+        `<span class="skill-tag ${i < learnedSkills ? 'learned' : ''}">${i < learnedSkills ? '✓ ' : ''}${s}</span>`
+      ).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderLessons() {
+  const el = document.getElementById('lessonsGrid');
+  el.innerHTML = LESSONS.map(l => {
+    const done = state.completedLessons.includes(l.id);
+    const domain = l.domain ? DOMAINS.find(d => d.id === l.domain) : null;
+    return `<div class="card ${done ? '' : ''}" onclick="openLesson('${l.id}')">
+      <div class="card-header">
+        <span class="card-icon">${l.icon}</span>
+        <span class="card-badge ${done ? 'badge-done' : 'badge-new'}">${done ? 'Completed' : 'New'}</span>
+      </div>
+      <div class="card-title">${l.title}</div>
+      <div class="card-desc">${l.desc}</div>
+      <div class="card-meta">
+        <span>+${l.xp} XP</span>
+        ${domain ? `<span style="color:${domain.color}">${domain.name.split(' ')[0]}</span>` : '<span>Foundation</span>'}
+        <span>Phase ${l.phase}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderAchievements() {
+  const el = document.getElementById('achievementsGrid');
+  el.innerHTML = ACHIEVEMENTS.map(a => {
+    const unlocked = state.unlockedAchievements.includes(a.id);
+    return `<div class="achievement ${unlocked ? 'unlocked' : ''}">
+      <div class="ach-icon">${a.icon}</div>
+      <div class="ach-info">
+        <div class="ach-name">${a.name}</div>
+        <div class="ach-desc">${a.desc}</div>
+        <div class="ach-xp">${unlocked ? '✓ Unlocked' : '+' + a.xp + ' XP'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openLesson(lessonId) {
+  const lesson = LESSONS.find(l => l.id === lessonId);
+  if (!lesson) return;
+
+  const idx = LESSONS.indexOf(lesson);
+  const prev = idx > 0 ? LESSONS[idx - 1] : null;
+  const next = idx < LESSONS.length - 1 ? LESSONS[idx + 1] : null;
+  const domain = lesson.domain ? DOMAINS.find(d => d.id === lesson.domain) : null;
+  const done = state.completedLessons.includes(lesson.id);
+  const quizDone = state.quizAnswers[lesson.id];
+
+  let quizHtml = '';
+  if (lesson.quiz) {
+    const q = lesson.quiz;
+    quizHtml = `<div class="quiz-section">
+      <div class="quiz-title">🧪 Knowledge Check</div>
+      <div class="quiz-question">${q.question}</div>
+      <div class="quiz-options" id="quizOpts-${lesson.id}">
+        ${q.options.map(opt => {
+          let cls = 'quiz-opt';
+          if (quizDone) {
+            cls += ' q-locked';
+            if (opt.correct) cls += ' q-correct';
+            else if (opt.letter === quizDone.letter && !quizDone.correct) cls += ' q-wrong';
+            else cls += ' q-dimmed';
+          }
+          return `<div class="${cls}" onclick="handleQuiz('${lesson.id}','${opt.letter}',${opt.correct})">
+            <span class="q-letter">${opt.letter}</span>
+            <span>${opt.text}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="quiz-feedback ${quizDone ? (quizDone.correct ? 'correct show' : 'wrong show') : ''}" id="quizFeedback-${lesson.id}">
+        ${quizDone ? (quizDone.correct ? '✓ Correct! ' : '✗ Incorrect. ') + q.explanation : ''}
+      </div>
+    </div>`;
+  }
+
+  const view = document.getElementById('lessonView');
+  view.innerHTML = `
+    <div class="lesson-breadcrumb">
+      <a onclick="showPage('lessons')">Lessons</a> <span>›</span>
+      ${domain ? `<span style="color:${domain.color}">${domain.name}</span> <span>›</span>` : ''}
+      <span>${lesson.title}</span>
+    </div>
+    <div class="lesson-content">${lesson.content}</div>
+    ${quizHtml}
+    ${!done ? `<div style="text-align:center;margin-bottom:20px;">
+      <button class="lesson-btn primary" onclick="markComplete('${lesson.id}')">Mark as Complete (+${lesson.xp} XP)</button>
+    </div>` : `<div style="text-align:center;margin-bottom:20px;color:var(--green);font-weight:700;">✓ Lesson Completed</div>`}
+    <div class="lesson-nav">
+      <button class="lesson-btn" onclick="openLesson('${prev ? prev.id : ''}')" ${!prev ? 'disabled' : ''}>← ${prev ? prev.title : 'Previous'}</button>
+      <button class="lesson-btn" onclick="openLesson('${next ? next.id : ''}')" ${!next ? 'disabled' : ''}>${next ? next.title : 'Next'} →</button>
+    </div>`;
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-lesson-detail').classList.add('active');
+  document.getElementById('nav-lessons').classList.add('active');
+  document.querySelector('.main').scrollTop = 0;
+}
+
+function handleQuiz(lessonId, letter, correct) {
+  if (state.quizAnswers[lessonId]) return;
+  answerQuiz(lessonId, letter, correct);
+  openLesson(lessonId);
+}
+
+function markComplete(lessonId) {
+  completeLesson(lessonId);
+  openLesson(lessonId);
+  updateProfile();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+
+updateStreak();
+updateProfile();
+renderDashboard();
+</script>
+</body>
+</html>
