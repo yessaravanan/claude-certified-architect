@@ -14,6 +14,12 @@ This repository contains study materials for the **Claude Certified Architect â€
 - Free for the first 5,000 partner company employees. General availability will be $99.
 - To request access to the official course/exam portal, use this link: https://anthropic.skilljar.com/claude-certified-architect-foundations-access-request
 
+## Entry-Level Preparation Guide
+
+New to Claude? Start here:
+
+- **Entry-level guide (English)**: [`guide_entry_level_en.md`](./guide_entry_level_en.md) â€” A 13-week roadmap from zero to certification-ready, designed for beginners with no prior Claude experience.
+
 ## Study Guide
 
 - **English guide**: [`guide_en.md`](./guide_en.MD)
